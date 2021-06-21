@@ -1,8 +1,18 @@
-let copyHTMLFunctionality = () => {
+let copyHTMLFunctionality = (pandora) => {
 const isExportPage = window.location.href.indexOf("exports") > -1;
 const email = document.querySelector("#email");
 if (isExportPage) {
 document.body.style.backgroundColor = "white";
+
+/*let downloadButton = window.parent.document.querySelector(".export-preview-details [data-testid='split-button']");
+if(pandora && (downloadButton != undefined || downloadButton != null)){
+  downloadButton.style.pointerEvents = "none"
+  downloadButton.querySelector("a").backgroundColor = "grey";
+  downloadButton.querySelector("button").backgroundColor = "grey";
+}*/
+
+
+
 let exportDivHTML = `	<div class="exportEmailInstructionsContainer" id="exportEmailInstructionsContainer">
                             <h1>Preparing a HTML email to send</h1>
                             <h2>Email</h2>
@@ -159,58 +169,4 @@ emailEl.style.display = "none";
 showEmailBtn.innerHTML = "Show Email Preview";
 }
 };
-copyHTMLFunctionality();
-  
-// Calling text size restriction functions once the fonts are loaded
-// All external font-families need to be added to 'fonts' array
-window.addEventListener('load', function(event) {
-  const fonts = ['Public Sans', 'Arial'];
-  const fontObservers = [];
 
-  fonts.forEach(font => {
-    const obs = new FontFaceObserver(font);
-    fontObservers.push(obs.load())
-  });
-
-  Promise.all(fontObservers).then(() => {
-
-    allImagesLoadedCallback();
-
-    observerAndLoad();
-    
-
-    document.dispatchEvent(new Event('printready'));
-  });
-  
-  //fixInfographicColspan();
-  
-});  
-
-const injectObserver = new MutationObserver(function(mutations) {
-  mutations.forEach(function(mutation) {
-    injectDynamicContent();
-
-  });
-}); 
-
-/* function fixInfographicColspan() {
-  var infographicTable = document.querySelectorAll(".infographic-table");
-  infographicTable.forEach((tbl, tbl_index)=>{
-    var infographicHeader = tbl.querySelector(".infographic-header");
-    var infographicItems = tbl.querySelectorAll(".infographic-items");
-    infographicHeader.setAttribute("colspan", infographicItems.length);
-  });
-}*/
-
-function observerAndLoad(){
-  if(getOutfitState() != "preview"){
-    maxLineCheck();
-    maxHeightCheck();
-    charLimit();
-  }
-  //hideEmptyTitles();
-  
-  if(getOutfitState() != "export"){
-     darkThemeIcons();
-  }
-}
