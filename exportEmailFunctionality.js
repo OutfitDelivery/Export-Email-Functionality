@@ -1,8 +1,10 @@
-let copyHTMLFunctionality = (pandora) => {
+let copyHTMLFunctionality = (options) => {
 const isExportPage = window.location.href.indexOf("exports") > -1;
 const email = document.querySelector("#email");
 if (isExportPage) {
 document.body.style.backgroundColor = "white";
+
+if(options.copyToClipboard)
 
 /*let downloadButton = window.parent.document.querySelector(".export-preview-details [data-testid='split-button']");
 if(pandora && (downloadButton != undefined || downloadButton != null)){
@@ -11,22 +13,45 @@ if(pandora && (downloadButton != undefined || downloadButton != null)){
   downloadButton.querySelector("button").backgroundColor = "grey";
 }*/
 
+let defaultSettings = {
+  pandora = false,
+  copyToClipboard = true,
+  copyHTMLCode = true,
+  downloadIndex = true,
+  downloadZip = true
+};
 
+if (!options) options = {};
+
+var settings = {};
+for(var key in defaultSettings){
+  if(options.hasOwnProperty(key)){
+    settings[key] = options[key];
+  } else {
+    settings[key] = defaultSettings[key];
+  }
+}
+
+let copyToClipboard = ` <h2>Email</h2>
+                        <p>Click the button below to copy the email. Open a new email and either right click + paste or use the paste command.</p>
+                        <p style="font-size: 10pt;">(Email service providers such as Outlook may interpret this email in different ways.)</p>
+                        <button class="copyToClipboard exportButton" onclick="copyToClipboard()">Copy to Clipboard</button>
+                        <div id="copiedConfirmation1" class="tooltip">Copied</div>`;
+
+let copyHTMLCode = `<p>Click the button below to copy the resource HTML. Within your chosen mass email system, either right click + paste or use the paste command into the HTML editor.</p>
+                    <button data-clipboard-target="#email" class="copyHTMLCode exportButton" onclick="copyHTMLCode()">Copy HTML Code</button>`;
+
+let downloadIndex = `<button data-clipboard-target="#email" class="downloadIndex exportButton" onclick="downloadIndex()">Download email.html</button>`;
+let downloadZip = `<button data-clipboard-target="#email" class="downloadZip exportButton" onclick="downloadZip()">Download ZIP File</button>`;
 
 let exportDivHTML = `	<div class="exportEmailInstructionsContainer" id="exportEmailInstructionsContainer">
                             <h1>Preparing a HTML email to send</h1>
-                            <h2>Email</h2>
-                            <p>Click the button below to copy the email. Open a new email and either right click + paste or use the paste command.</p>
-                            <p style="font-size: 10pt;">(Email service providers such as Outlook may interpret this email in different ways.)</p>
-                            <button class="copyToClipboard exportButton" onclick="copyToClipboard()">Copy to Clipboard</button>
-                            <div id="copiedConfirmation1" class="tooltip">Copied</div>
-
+                            ${settings.copyToClipboard ? copyToClipboard : ""}
                             <h2>Mass Email System</h2>
-                            <p>Click the button below to copy the resource HTML. Within your chosen mass email system, either right click + paste or use the paste command into the HTML editor.</p>
-                            <button data-clipboard-target="#email" class="copyHTMLCode exportButton" onclick="copyHTMLCode()">Copy HTML Code</button>
+                            ${settings.copyHTMLCode ? copyHTMLCode : ""}
                             <div class="dual-button">
-                            <button data-clipboard-target="#email" class="downloadIndex exportButton" onclick="downloadIndex()">Download email.html</button>
-                            <button data-clipboard-target="#email" class="downloadZip exportButton" onclick="downloadZip()">Download ZIP File</button>
+                            ${settings.downloadIndex ? downloadIndex : ""}
+                            ${settings.downloadZip ? downloadZip : ""}
                             </div>
                             <div id="copiedConfirmation2" class="tooltip">Copied</div>
 
@@ -141,7 +166,7 @@ document.body.removeChild(dummy);
 
 let downloadZip = () => {
 var zip = new JSZip();
-zip.file("index.html", emailHTML);
+zip.file("email.html", emailHTML);
 
 zip.generateAsync({ type: "blob" }).then(function (content) {
 saveAs(content, "email.zip");
