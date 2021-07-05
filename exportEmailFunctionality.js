@@ -40,8 +40,10 @@ let copyHTMLFunctionality = (options) => {
     let copyHTMLCode = `<p>Click the button below to copy the resource HTML. Within your chosen mass email system, either right click + paste or use the paste command into the HTML editor.</p>
                     <button data-clipboard-target="#email" class="copyHTMLCode exportButton" onclick="copyHTMLCode()">Copy HTML Code</button>`;
 
-    let downloadIndex = `<button data-clipboard-target="#email" class="downloadIndex exportButton" onclick="downloadIndex()">Download email.html</button>`;
-    let downloadZip = `<button data-clipboard-target="#email" class="downloadZip exportButton" onclick="downloadZip()">Download ZIP File</button>`;
+    let downloadIndex = `<p>If your mass email system permits HTML files, click the button below to download the singular HTML file. From here, upload this file into your system.</p>
+                         <button data-clipboard-target="#email" class="downloadIndex exportButton" onclick="downloadIndex()">Download email.html</button>`;
+    let downloadZip = `<p>If your mass email system permits zip files, click the button below to download a zip of the HTML. From here, upload the zip file into your system.</p>
+                       <button data-clipboard-target="#email" class="downloadZip exportButton" onclick="downloadZip()">Download ZIP File</button>`;
 
     let exportDivHTML = `	<div class="exportEmailInstructionsContainer" id="exportEmailInstructionsContainer">
                             <h1>Preparing a HTML email to send</h1>
