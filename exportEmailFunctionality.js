@@ -67,10 +67,6 @@ let copyHTMLFunctionality = (options) => {
     document.body.insertAdjacentHTML("afterbegin", exportDivHTML);
     document.head.insertAdjacentHTML("beforeend", exportCSS);
     email.style.display = "none";
-
-    var htmlClipboard = new Clipboard(".copyHTMLCode", {
-      text: emailHTML,
-    });
   }
 };
 let getEmailHTML = () => {
